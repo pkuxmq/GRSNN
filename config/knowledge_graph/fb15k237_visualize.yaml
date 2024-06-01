@@ -1,0 +1,40 @@
+output_dir: ./experiments/
+
+dataset:
+  class: FB15k237
+  path: ./datasets/knowledge_graphs/
+
+task:
+  class: KnowledgeGraphCompletionSNN
+  model:
+    class: GRSNN
+    input_dim: 32
+    hidden_dim: 32
+    dependent: yes
+    remove_one_hop: yes
+    tau: 4.
+    Vth: 2.
+    delay_bound: 4.
+    self_connection: False
+    time_steps: 10
+    temporal_decay_ratio: 0.95
+    boundary_query: yes
+    linear_scale: 0.1
+    surrogate_function: normalize
+  criterion: bce
+  num_negative: 256
+  strict_negative: yes
+  adversarial_temperature: 0.5
+  sample_weight: no
+
+optimizer:
+  class: Adam
+  lr: 2.0e-3
+
+engine:
+  gpus: {{ gpus }}
+  batch_size: 20
+
+metric: mrr
+
+checkpoint: ./experiments/models/fb15k237.pth

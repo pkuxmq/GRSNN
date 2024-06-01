@@ -1,0 +1,37 @@
+output_dir: ./experiments/
+
+dataset:
+  class: CoraLinkPrediction
+  path: ./datasets/homogeneous_graphs/
+
+task:
+  class: LinkPrediction
+  model:
+    class: GRSNN
+    input_dim: 32
+    hidden_dim: 32
+    dependent: no
+    remove_one_hop: yes
+    symmetric: yes
+    tau: 4.
+    Vth: 2.
+    delay_bound: 4
+    self_connection: False
+    time_steps: 10
+    temporal_decay_ratio: 0.95
+  criterion: bce
+  num_negative: 1
+  strict_negative: yes
+
+optimizer:
+  class: Adam
+  lr: 2.0e-3
+
+engine:
+  gpus: {{ gpus }}
+  batch_size: 32
+
+train:
+  num_epoch: 20
+
+metric: auroc

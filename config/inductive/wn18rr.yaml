@@ -1,0 +1,39 @@
+output_dir: ./experiments/
+
+dataset:
+  class: WN18RRInductive
+  path: ./datasets/knowledge_graphs/
+  version: {{ version }}
+
+task:
+  class: InductiveKnowledgeGraphCompletion
+  model:
+    class: GRSNN
+    input_dim: 32
+    hidden_dim: 32
+    dependent: yes
+    tau: 4.
+    Vth: 2.
+    delay_bound: 4
+    self_connection: False
+    time_steps: 10
+    temporal_decay_ratio: 0.95
+    boundary_query: yes
+  criterion: bce
+  num_negative: 50
+  strict_negative: yes
+  adversarial_temperature: 1
+  sample_weight: no
+
+optimizer:
+  class: Adam
+  lr: 5.0e-3
+
+engine:
+  gpus: {{ gpus }}
+  batch_size: 32
+
+train:
+  num_epoch: 20
+
+metric: mrr
